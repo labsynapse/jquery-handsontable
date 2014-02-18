@@ -194,6 +194,13 @@
         }
       }
       $document.on('keydown.handsontable.' + instance.guid, onKeyDown);
+	  
+	  function onCellClick() {
+		if (instance.getSettings().clickBeginsEditing) {
+			that.openEditor();
+		}
+	  }
+      instance.view.wt.update('onCellClick', onCellClick);
 
       function onDblClick() {
 //        that.instance.destroyEditor();
