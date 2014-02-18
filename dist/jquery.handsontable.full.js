@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  * http://handsontable.com/
  *
- * Date: Tue Feb 18 2014 10:36:14 GMT-0500 (Eastern Standard Time)
+ * Date: Tue Feb 18 2014 11:11:06 GMT-0500 (Eastern Standard Time)
  */
 /*jslint white: true, browser: true, plusplus: true, indent: 4, maxerr: 50 */
 
@@ -10888,7 +10888,9 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
-	  if (cell.TD && cell.TD.nodeName=='TD') that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  }
     }
   };
 

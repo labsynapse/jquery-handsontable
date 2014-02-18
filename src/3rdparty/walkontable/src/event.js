@@ -82,7 +82,9 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
-	  if (cell.TD && cell.TD.nodeName=='TD') that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  }
     }
   };
 
