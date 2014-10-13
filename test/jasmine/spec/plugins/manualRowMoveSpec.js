@@ -307,7 +307,7 @@ describe('manualRowMove', function () {
   });
 
   it("should display the move handle in the correct place after the table has been scrolled", function () {
-    handsontable({
+    var hot = handsontable({
       data: createSpreadsheetData(20, 20),
       rowHeaders: true,
       manualRowMove: true,
@@ -326,7 +326,9 @@ describe('manualRowMove', function () {
     this.$container.scrollTop(200);
     this.$container.scroll();
 
-    $rowHeader = this.$container.find('.ht_clone_left tbody tr:eq(10) th:eq(0)');
+    var renderedTHId = hot.view.wt.wtTable.rowFilter.sourceToRendered(10);
+
+    $rowHeader = this.$container.find('.ht_clone_left tbody tr:eq('+ renderedTHId +') th:eq(0)');
     $rowHeader.trigger("mouseenter");
     expect($rowHeader.offset().left).toEqual($handle.offset().left);
     expect($rowHeader.offset().top).toEqual($handle.offset().top);

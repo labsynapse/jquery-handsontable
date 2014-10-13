@@ -24,7 +24,7 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 100
     });
@@ -46,13 +46,13 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: height,
       width: 200
     });
     wt.draw();
 
-    var potentialCellCount = colCount * (Math.ceil(height / rowHeight) + wt.wtTable.getRowStrategy().maxOuts);
+    var potentialCellCount = colCount * (Math.ceil(height / rowHeight) + wt.wtTable.getRowStrategy().maxBefore + wt.wtTable.getRowStrategy().maxOuts);
 
     expect($table.find('td').length).toBe(potentialCellCount);
   });
@@ -67,7 +67,7 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       rowHeaders: [function (row, TH) {
         TH.innerHTML = row + 1;
@@ -89,12 +89,12 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 400
     });
     wt.draw();
 
-    var expectedRowCount = Math.ceil(400 / rowHeight) + wt.wtTable.getRowStrategy().maxOuts;
+    var expectedRowCount = Math.ceil(400 / rowHeight) + wt.wtTable.getRowStrategy().maxBefore + wt.wtTable.getRowStrategy().maxOuts;
 
     expect($table.find('tbody tr').length).toBe(expectedRowCount);
   });
@@ -108,7 +108,7 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       width: 100
     });
     wt.draw();
@@ -122,7 +122,7 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       width: 100
     });
     wt.draw();
@@ -139,7 +139,7 @@ describe('WalkontableCore', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       width: 100
     });
     wt.draw();

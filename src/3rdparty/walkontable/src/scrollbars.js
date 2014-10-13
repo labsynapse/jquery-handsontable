@@ -56,7 +56,7 @@ WalkontableScrollbars.prototype.destroy = function () {
 
 WalkontableScrollbars.prototype.refresh = function (selectionsOnly) {
   this.horizontal && this.horizontal.readSettings();
-  this.vertical && this.vertical.readSettings();
+//  this.vertical && this.vertical.readSettings();
   this.horizontal && this.horizontal.refresh(selectionsOnly);
   this.vertical && this.vertical.refresh(selectionsOnly);
   this.corner && this.corner.refresh(selectionsOnly);

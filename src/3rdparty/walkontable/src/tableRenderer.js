@@ -23,6 +23,9 @@ function WalkontableTableRenderer(wtTable){
     this.fixedRowsTop = this.instance.getSetting('fixedRowsTop');
     this.columnHeaders = this.instance.getSetting('columnHeaders');
 
+
+
+
   var visibleColIndex
     , totalRows = this.instance.getSetting('totalRows')
     , totalColumns = this.instance.getSetting('totalColumns')
@@ -37,7 +40,7 @@ function WalkontableTableRenderer(wtTable){
         cloneLimit = this.fixedRowsTop;
       }
       else if (this.instance.cloneOverlay instanceof WalkontableHorizontalScrollbarNative) {
-        cloneLimit = this.wtTable.getRowStrategy().cellCount;
+        cloneLimit = this.wtTable.getRowStrategy().getRenderEnd();
       }
       //else if WalkontableDebugOverlay do nothing. No cloneLimit means render ALL rows
     }
@@ -58,6 +61,9 @@ function WalkontableTableRenderer(wtTable){
       workspaceWidth = this.instance.wtViewport.getWorkspaceWidth();
       this.instance.wtViewport.containerWidth = null;
       this.wtTable.getColumnStrategy().stretch();
+
+      this.wtTable.getRowStrategy().cacheRenderedRowHeights();
+      this.wtTable.getRowStrategy().getViewportEnd();
     }
 
     this.adjustColumnWidths(displayTds);
@@ -105,21 +111,21 @@ WalkontableTableRenderer.prototype.removeRedundantRows = function () {
 
 WalkontableTableRenderer.prototype.renderRows = function (totalRows, cloneLimit, displayTds) {
   var lastTD, TR, res;
-  var offsetRow = this.instance.getSetting('offsetRow');
-  var visibleRowIndex = 0;
-  var sourceRowIndex = this.rowFilter.renderedToSource(visibleRowIndex);
+  var renderStart = this.instance.getSetting('renderStart');
+  var renderedRowIndex = 0;
+  var sourceRowIndex = this.rowFilter.renderedToSource(renderedRowIndex);
   var isWorkingOnClone = this.wtTable.isWorkingOnClone();
 
   while (sourceRowIndex < totalRows && sourceRowIndex >= 0) {
-    if (visibleRowIndex > 1000) {
+    if (renderedRowIndex > 1000) {
       throw new Error('Security brake: Too much TRs. Please define height for your table, which will enforce scrollbars.');
     }
 
-    if (cloneLimit !== void 0 && visibleRowIndex === cloneLimit) {
+    if (cloneLimit !== void 0 && renderedRowIndex === cloneLimit) {
       break; //we have as much rows as needed for this clone
     }
 
-    TR = this.getOrCreateTrForRow(visibleRowIndex, TR);
+    TR = this.getOrCreateTrForRow(renderedRowIndex, TR);
 
     //Render row headers
     this.renderRowHeaders(sourceRowIndex, TR);
@@ -128,18 +134,19 @@ WalkontableTableRenderer.prototype.renderRows = function (totalRows, cloneLimit,
 
     lastTD = this.renderCells(sourceRowIndex, TR, displayTds);
 
-    offsetRow = this.instance.getSetting('offsetRow'); //refresh the value
+    renderStart = this.instance.getSetting('renderStart'); //refresh the value
 
     //after last column is rendered, check if last cell is fully displayed
-    if (!isWorkingOnClone) {
-      res = this.wtTable.getRowStrategy().add(visibleRowIndex, lastTD);
+//    if (!isWorkingOnClone) {
+//      res = this.wtTable.getRowStrategy().add(renderedRowIndex, lastTD);
+//
+//      if (res === false) {
+//        break;
+//      }
+//
+//      this.resetOversizedRow(sourceRowIndex);
+//    }
 
-      if (res === false) {
-        break;
-      }
-
-      this.resetOversizedRow(sourceRowIndex);
-    }
 
 
     if (TR.firstChild) {
@@ -152,9 +159,9 @@ WalkontableTableRenderer.prototype.renderRows = function (totalRows, cloneLimit,
       }
     }
 
-    visibleRowIndex++;
+    renderedRowIndex++;
 
-    sourceRowIndex = this.rowFilter.renderedToSource(visibleRowIndex);
+    sourceRowIndex = this.rowFilter.renderedToSource(renderedRowIndex);
   }
 };
 
@@ -426,21 +433,8 @@ WalkontableTableRenderer.prototype.refreshStretching = function () {
     }
   };
 
-  var containerHeightFn = function (cacheHeight) {
-    if (that.instance.cloneOverlay instanceof WalkontableDebugOverlay || instance.wtSettings.settings.renderAllRows) {
-      return Infinity;
-    }
-    else {
-      return that.instance.wtViewport.getViewportHeight(cacheHeight);
-    }
-  };
-
-  var rowHeightFn = function (i, TD) {
-    return instance.wtSettings.settings.defaultRowHeight;
-  };
-
   this.wtTable.columnStrategy = new WalkontableColumnStrategy(instance, containerWidthFn, columnWidthFn, stretchH);
-  this.wtTable.rowStrategy = new WalkontableRowStrategy(instance, containerHeightFn, rowHeightFn);
+
 };
 
 /*

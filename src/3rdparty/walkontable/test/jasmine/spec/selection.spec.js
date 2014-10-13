@@ -23,7 +23,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 100,
       selections: [
@@ -55,7 +55,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 100,
       selections: [
@@ -80,7 +80,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 100,
       selections: [
@@ -120,7 +120,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 150,
       selections: [
@@ -145,7 +145,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 150,
       selections: [
@@ -175,7 +175,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 150,
       selections: [
@@ -206,7 +206,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 300,
       selections: [
@@ -235,7 +235,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 300,
       selections: [
@@ -264,7 +264,7 @@ describe('WalkontableSelection', function () {
       data: getData,
       totalRows: getTotalRows,
       totalColumns: getTotalColumns,
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 300,
       selections: [
@@ -301,7 +301,7 @@ describe('WalkontableSelection', function () {
       columnHeaders: [function (row, TH) {
         TH.innerHTML = row + 1;
       }],
-      offsetRow: 0,
+      renderStart: 0,
       height: 200,
       width: 300,
       selections: [
@@ -326,7 +326,7 @@ describe('WalkontableSelection', function () {
 
     var $colHeaders = $table.find("thead tr:first-child th"),
         $rowHeaders = $table.find("tbody tr th:first-child");
-    
+
     expect($colHeaders.eq(2).hasClass('highlightColumn')).toBe(true);
     expect($colHeaders.eq(3).hasClass('highlightColumn')).toBe(true);
 
@@ -348,7 +348,7 @@ describe('WalkontableSelection', function () {
         data: getData,
         totalRows: getTotalRows,
         totalColumns: getTotalColumns,
-        offsetRow: 0,
+        renderStart: 0,
         height: 200,
         selections: [
           new WalkontableSelection({

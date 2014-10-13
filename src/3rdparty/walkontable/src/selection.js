@@ -80,13 +80,13 @@ WalkontableSelection.prototype.addClassAtCoords = function (instance, source_r, 
 
 WalkontableSelection.prototype.draw = function (instance) {
   var corners, r, c, source_r, source_c,
-    visibleRows = instance.wtTable.getRowStrategy().countVisible(),
+    renderedRows = instance.wtTable.getRowStrategy().countRendered(),
     renderedColumns = instance.wtTable.getColumnStrategy().cellCount;
 
   if (!this.isEmpty()) {
     corners = this.getCorners();
 
-    for (r = 0; r < visibleRows; r++) {
+    for (r = 0; r < renderedRows; r++) {
       source_r = instance.wtTable.rowFilter.renderedToSource(r);
 
       for (c = 0; c < renderedColumns; c++) {
@@ -101,7 +101,7 @@ WalkontableSelection.prototype.draw = function (instance) {
           // selected row headers
           if(source_c === corners[1]) {
             var TH = instance.wtTable.getRowHeader(source_r);
-            if (TH) {
+            if (TH && this.settings.highlightRowClassName) {
               Handsontable.Dom.addClass(TH, this.settings.highlightRowClassName);
             }
           }
@@ -109,18 +109,20 @@ WalkontableSelection.prototype.draw = function (instance) {
           // selected column headers
           if(source_r === corners[0] || (source_r > corners[0] && r == 0)) {
             var TH = instance.wtTable.getColumnHeader(source_c);
-            if (TH) {
+            if (TH && this.settings.highlightColumnClassName) {
               Handsontable.Dom.addClass(TH, this.settings.highlightColumnClassName);
             }
           }
         }
         else if (source_r >= corners[0] && source_r <= corners[2]) {
           //selection is in this row
-          this.addClassAtCoords(instance, source_r, source_c, this.settings.highlightRowClassName);
+          if(this.settings.highlightRowClassName)
+            this.addClassAtCoords(instance, source_r, source_c, this.settings.highlightRowClassName);
         }
         else if (source_c >= corners[1] && source_c <= corners[3]) {
           //selection is in this column
-          this.addClassAtCoords(instance, source_r, source_c, this.settings.highlightColumnClassName);
+          if(this.settings.highlightColumnClassName)
+            this.addClassAtCoords(instance, source_r, source_c, this.settings.highlightColumnClassName);
         }
       }
     }

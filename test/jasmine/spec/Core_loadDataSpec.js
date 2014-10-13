@@ -144,7 +144,8 @@ describe('Core_loadData', function () {
   it('should create new rows for array of arrays (and respect minRows)', function () {
     handsontable({
       minRows: 20, //minRows should be respected
-      data: arrayOfArrays()
+      data: arrayOfArrays(),
+      height: 800
     });
 
     expect(countRows()).toEqual(20); //TODO why this must be checked after render?
@@ -153,7 +154,8 @@ describe('Core_loadData', function () {
   it('should create new rows for array of nested objects (and respect minRows)', function () {
     handsontable({
       minRows: 20, //minRows should be respected
-      data: arrayOfNestedObjects()
+      data: arrayOfNestedObjects(),
+      height: 800
     });
 
     expect(countRows()).toEqual(20); //TODO why this must be checked after render?

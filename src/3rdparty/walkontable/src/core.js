@@ -45,7 +45,7 @@ function Walkontable(settings) {
 
 /**
  * Force rerender of Walkontable
- * @param selectionsOnly {Boolean} When TRUE, try to refresh only the positions of borders without rerendering the data. It will only work if offsetRow was not changed since last render
+ * @param selectionsOnly {Boolean} When TRUE, try to refresh only the positions of borders without rerendering the data. It will only work if renderStart was not changed since last render
  * @returns {Walkontable}
  */
 Walkontable.prototype.draw = function (selectionsOnly) {
@@ -55,12 +55,12 @@ Walkontable.prototype.draw = function (selectionsOnly) {
     return;
   }
 
-  selectionsOnly = selectionsOnly && this.getSetting('offsetRow') === this.lastOffsetRow;
-  this.lastOffsetRow = this.getSetting('offsetRow');
+  selectionsOnly = selectionsOnly && this.getSetting('renderStart') === this.lastRenderStart;
+  this.lastRenderStart = this.getSetting('renderStart');
 
   var totalRows = this.getSetting('totalRows');
 
-  if (this.lastOffsetRow > totalRows && totalRows > 0) {
+  if (this.lastRenderStart > totalRows && totalRows > 0) {
     this.scrollVertical(-Infinity); //TODO: probably very inefficient!
     this.scrollViewport(new WalkontableCellCoords(totalRows - 1, 0));
   }

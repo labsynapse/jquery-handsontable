@@ -6,6 +6,7 @@ function WalkontableVerticalScrollbarNative(instance) {
   this.total;
   this.init();
   this.clone = this.makeClone('top');
+  this.scrollbarPosition = 0;
 
   this.lastStart = null;
   this.lastEnd = null;
@@ -60,13 +61,14 @@ WalkontableVerticalScrollbarNative.prototype.setScrollPosition = function (pos) 
 };
 
 WalkontableVerticalScrollbarNative.prototype.onScroll = function () {
-  this.readSettings(); //read window scroll position
+//  this.readSettings(); //read window scroll position
+  this.scrollbarPosition = this.getScrollPosition();
   this.instance.draw(true);//
   this.instance.getSetting('onScrollVertically');
 };
 
 WalkontableVerticalScrollbarNative.prototype.getLastCell = function () {
-  return this.instance.getSetting('offsetRow') + this.instance.wtTable.tbodyChildrenLength - 1;
+  return this.instance.getSetting('renderStart') + this.instance.wtTable.tbodyChildrenLength - 1;
 };
 
 WalkontableVerticalScrollbarNative.prototype.sumCellSizes = function (from, length) {
@@ -118,36 +120,39 @@ WalkontableVerticalScrollbarNative.prototype.getTableParentOffset = function () 
 };
 
 WalkontableVerticalScrollbarNative.prototype.readSettings = function () {
-  this.offset = this.instance.getSetting('offsetRow');
+//  var rowsBeforeViewport = this.instance.getSetting('rowsBeforeViewport')
+//    , sum = 0
+//    , last
+//    , scrollY = this.getScrollPosition()
+//    , scrollDelta = scrollY - this.getTableParentOffset();
+
   this.total = this.instance.getSetting('totalRows');
 
-  var scrollY = this.getScrollPosition();
-  if(this.lastEnd != null) {
-    if(scrollY > this.lastStart) {
-      var height = this.instance.wtViewport.getWorkspaceHeight();
-      if(scrollY + height < this.lastEnd) {
-        return; //do not change offsetRow if I am within last rendered viewport. Walkontable.prototype.draw will skip drawing if offsetRow is not changed
-      }
-    }
-  }
-
-  var scrollDelta = scrollY - this.getTableParentOffset();
-
-  scrollDelta -= 100; //render 100px before viewport. Change this to anything you like
-  if(scrollDelta < 0) {
-    scrollDelta = 0;
-  }
-
-  var sum = 0;
-  var last;
-  for (var i = 0; i < this.total; i++) {
-    last = this.instance.getSetting('rowHeight', i) || this.instance.wtSettings.settings.defaultRowHeight;
-    sum += last;
-    if (sum - 1 > scrollDelta) {
-      break;
-    }
-  }
-
-  this.offset = Math.min(i, this.total);
-  this.instance.update('offsetRow', this.offset);
+//  if(this.lastEnd != null) {
+//    if(scrollY > this.lastStart) {
+//      var height = this.instance.wtViewport.getWorkspaceHeight();
+//      if(scrollY + height < this.lastEnd) {
+//        return; //do not change renderStart if I am within last rendered viewport. Walkontable.prototype.draw will skip drawing if renderStart is not changed
+//      }
+//    }
+//  }
+//
+//
+//  for (var i = 0; i < this.total; i++) {
+//    last = this.instance.getSetting('rowHeight', i) || this.instance.wtSettings.settings.defaultRowHeight;
+//    sum += last;
+//    if (sum - 1 > scrollDelta) {
+//      break;
+//    }
+//  }
+//
+//  if(rowsBeforeViewport) {
+//    i -= rowsBeforeViewport;
+//    if(i < 0) {
+//      i = 0;
+//    }
+//  }
+//
+//  this.offset = Math.min(i, this.total);
+//  this.instance.update('renderStart', this.offset);
 };

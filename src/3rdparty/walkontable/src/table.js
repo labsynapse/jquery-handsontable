@@ -102,6 +102,7 @@ WalkontableTable.prototype.refreshHiderDimensions = function () {
 };
 
 WalkontableTable.prototype.draw = function (selectionsOnly) {
+
   if (!selectionsOnly) {
     if (this.isWorkingOnClone()) {
       this.tableOffset = this.instance.cloneSource.wtTable.tableOffset;
@@ -113,18 +114,42 @@ WalkontableTable.prototype.draw = function (selectionsOnly) {
       this.instance.wtScrollbars.horizontal.readSettings();
       this.instance.wtViewport.resetSettings();
     }
-    var offsetRow;
+
+
+    var containerHeightFn = function (cacheHeight) {
+      if (this.instance.cloneOverlay instanceof WalkontableDebugOverlay || this.instance.wtSettings.settings.renderAllRows) {
+        return Infinity;
+      }
+      else {
+        return this.instance.wtViewport.getViewportHeight(cacheHeight);
+      }
+    };
+
+    var scrollPosition
+      , tableParentOffset;
+    if(this.isWorkingOnClone()) {
+      scrollPosition = this.instance.cloneSource.wtScrollbars.vertical.getScrollPosition();
+      tableParentOffset = this.instance.cloneSource.wtScrollbars.vertical.getTableParentOffset();
+    } else {
+      scrollPosition = this.instance.wtScrollbars.vertical.getScrollPosition();
+      tableParentOffset = this.instance.wtScrollbars.vertical.getTableParentOffset();
+    }
+    this.rowStrategy = new WalkontableRowStrategy(this.instance, containerHeightFn, tableParentOffset, scrollPosition , this.instance.wtSettings.getSetting('defaultRowHeight'));
+
+
+    var renderStart;
     if (this.instance.cloneOverlay instanceof WalkontableDebugOverlay
         || this.instance.cloneOverlay instanceof WalkontableVerticalScrollbarNative
         || this.instance.cloneOverlay instanceof WalkontableCornerScrollbarNative) {
-      offsetRow = 0;
+      renderStart = 0;
     }
     else {
-      offsetRow = this.instance.wtSettings.settings.offsetRow;
+      renderStart = this.rowStrategy.renderStart;
+//      renderStart = this.instance.wtSettings.settings.renderStart;
     }
 
     this.rowFilter = new WalkontableRowFilter(
-      offsetRow,
+      renderStart,
       this.instance.getSetting('totalRows'),
       this.instance.getSetting('columnHeaders').length
     );
@@ -145,6 +170,8 @@ WalkontableTable.prototype.draw = function (selectionsOnly) {
     this.instance.wtScrollbars.horizontal.resetFixedPosition();
     this.instance.wtScrollbars.corner.resetFixedPosition();
     this.instance.wtScrollbars.debug && this.instance.wtScrollbars.debug.resetFixedPosition();
+
+    this.rowStrategy.updateRowBoundaries();
   }
 
   this.instance.drawn = true;

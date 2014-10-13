@@ -9,7 +9,7 @@ WalkontableScroll.prototype.scrollVertical = function (delta) {
 
   var instance = this.instance
     , newOffset
-    , offset = instance.getSetting('offsetRow')
+    , offset = instance.getSetting('renderStart')
     , fixedCount = instance.getSetting('fixedRowsTop')
     , total = instance.getSetting('totalRows')
     , maxSize = instance.wtViewport.getViewportHeight();
@@ -63,7 +63,7 @@ WalkontableScroll.prototype.scrollViewport = function (coords) {
     return;
   }
 
-  var offsetRow = this.instance.getSetting('offsetRow')
+  var renderStart = this.instance.getSetting('renderStart')
     , totalRows = this.instance.getSetting('totalRows')
     , totalColumns = this.instance.getSetting('totalColumns');
 

@@ -430,5 +430,22 @@ describe("handsontable.MergeCells", function () {
       var regularCellScrollTop = hot.rootElement[0].scrollTop;
       expect(mergedCellScrollTop).toBe(regularCellScrollTop);
     });
+
+
+    it("should not hide merged cells when part of them is outside the viewport", function () {
+      var hot = handsontable({
+        data: createSpreadsheetObjectData(30, 5),
+        mergeCells: [
+          {row: 1, col: 0, rowspan: 20, colspan: 2}
+        ],
+        height: 100,
+        width: 400
+      });
+
+      hot.rootElement[0].scrollTop = 150;
+      hot.render();
+
+    });
+
   });
 });

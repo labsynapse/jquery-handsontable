@@ -50,7 +50,9 @@ Handsontable.PluginHookClass = (function () {
       modifyColWidth: [],
       modifyRowHeight: [],
       modifyRow: [],
-      modifyCol: []
+      modifyCol: [],
+      modifyRowsBeforeViewport: [],
+      modifyRowsAfterViewport: []
     }
   };
 

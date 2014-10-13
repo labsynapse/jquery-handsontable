@@ -15,7 +15,7 @@ WalkontableViewport.prototype.getWorkspaceHeight = function () {
   }
   else {
     var elemHeight = Handsontable.Dom.outerHeight(scrollHandler);
-    var height = (elemHeight > 0 && scrollHandler.clientHeight > 0) ? scrollHandler.clientHeight : Infinity; //returns height without DIV scrollbar
+    var height = (elemHeight >= 0 && scrollHandler.clientHeight >= 0) ? scrollHandler.clientHeight : Infinity; //returns height without DIV scrollbar
     return height;
   }
 };

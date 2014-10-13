@@ -158,7 +158,7 @@ Handsontable.TableView = function (instance) {
     data: instance.getDataAtCell,
     totalRows: instance.countRows,
     totalColumns: instance.countCols,
-    offsetRow: 0,
+    renderStart: 0,
     fixedColumnsLeft: function () {
       return that.settings.fixedColumnsLeft;
     },
@@ -191,6 +191,16 @@ Handsontable.TableView = function (instance) {
 
     },
     selections: selections,
+    rowsBeforeViewport: function () {
+      var rowCount = 1;
+      Handsontable.hooks.run(that.instance, 'modifyRowsBeforeViewport', rowCount);
+      return rowCount;
+    },
+    rowsAfterViewport: function () {
+      var rowCount = 3;
+      Handsontable.hooks.run(that.instance, 'modifyRowsAfterViewport', rowCount);
+      return rowCount;
+    },
     hideBorderOnMouseDownOver: function () {
       return that.settings.fragmentSelection;
     },
