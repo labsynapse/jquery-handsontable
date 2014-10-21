@@ -2297,7 +2297,6 @@ DefaultSettings.prototype = {
   manualRowResize: void 0,
   groups: void 0,
   clickBeginsEditing: false
-
 };
 Handsontable.DefaultSettings = DefaultSettings;
 
@@ -3004,15 +3003,6 @@ Handsontable.TableView = function (instance) {
       instance.unlisten();
     }
   });
-  
-  $document.on('keydown.handsontable.' + instance.guid, onKeyDown);
-  
-    function onCellClick() {
-	if (instance.getSettings().clickBeginsEditing) {
-		that.openEditor();
-	}
-    }
-  instance.view.wt.update('onCellClick', onCellClick);
 
   $documentElement.on('mousedown.' + instance.guid, function (event) {
     var next = event.target;
@@ -3031,7 +3021,6 @@ Handsontable.TableView = function (instance) {
         }
         next = next.parentNode;
       }
-
     }
 
     //function did not return until here, we have an outside click!
@@ -3691,6 +3680,13 @@ Handsontable.TableView.prototype.mainViewIsActive = function () {
       }
 
       instance.view.wt.update('onCellDblClick', onDblClick);
+
+        function onCellClick() {
+          if (instance.getSettings().clickBeginsEditing) {
+            that.openEditor();
+          }
+        }
+      instance.view.wt.update('onCellClick', onCellClick);
 
       instance.addHook('afterDestroy', function(){
         destroyed = true;
@@ -15449,7 +15445,7 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
-	  if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+          if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
 		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
 	  }
     }
@@ -16377,7 +16373,7 @@ function WalkontableSettings(instance, settings) {
     onCellMouseDown: null,
     onCellMouseOver: null,
 //    onCellMouseOut: null,
-	onCellClick: null,
+    onCellClick: null,
     onCellDblClick: null,
     onCellCornerMouseDown: null,
     onCellCornerDblClick: null,
@@ -18162,3 +18158,4 @@ WalkontableViewport.prototype.resetSettings = function () {
         });
     }
 }).call(this);
+
