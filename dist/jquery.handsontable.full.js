@@ -2295,7 +2295,8 @@ DefaultSettings.prototype = {
   manualColumnResize: void 0,
   manualRowMove: void 0,
   manualRowResize: void 0,
-  groups: void 0
+  groups: void 0,
+  clickBeginsEditing: false
 };
 Handsontable.DefaultSettings = DefaultSettings;
 
@@ -3679,6 +3680,13 @@ Handsontable.TableView.prototype.mainViewIsActive = function () {
       }
 
       instance.view.wt.update('onCellDblClick', onDblClick);
+
+        function onCellClick() {
+          if (instance.getSettings().clickBeginsEditing) {
+            that.openEditor();
+          }
+        }
+      instance.view.wt.update('onCellClick', onCellClick);
 
       instance.addHook('afterDestroy', function(){
         destroyed = true;
@@ -15437,6 +15445,9 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
+          if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  }
     }
   };
 
@@ -16362,6 +16373,7 @@ function WalkontableSettings(instance, settings) {
     onCellMouseDown: null,
     onCellMouseOver: null,
 //    onCellMouseOut: null,
+    onCellClick: null,
     onCellDblClick: null,
     onCellCornerMouseDown: null,
     onCellCornerDblClick: null,
@@ -18146,3 +18158,4 @@ WalkontableViewport.prototype.resetSettings = function () {
         });
     }
 }).call(this);
+
