@@ -190,6 +190,14 @@
           }
         }
       }
+      $document.on('keydown.handsontable.' + instance.guid, onKeyDown);
+	  
+	  function onCellClick() {
+		if (instance.getSettings().clickBeginsEditing) {
+			that.openEditor();
+		}
+	  }
+      instance.view.wt.update('onCellClick', onCellClick);
 
       instance.addHook('afterDocumentKeyDown', function(originalEvent){
         onKeyDown(originalEvent);

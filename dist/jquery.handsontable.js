@@ -2295,7 +2295,8 @@ DefaultSettings.prototype = {
   manualColumnResize: void 0,
   manualRowMove: void 0,
   manualRowResize: void 0,
-  groups: void 0
+  groups: void 0,
+  clickBeginsEditing: false
 };
 Handsontable.DefaultSettings = DefaultSettings;
 
@@ -3003,6 +3004,15 @@ Handsontable.TableView = function (instance) {
     }
   });
 
+  $document.on('keydown.handsontable.' + instance.guid, onKeyDown);
+  
+    function onCellClick() {
+  	if (instance.getSettings().clickBeginsEditing) {
+		that.openEditor();
+	}
+    }
+  instance.view.wt.update('onCellClick', onCellClick);
+  
   $documentElement.on('mousedown.' + instance.guid, function (event) {
     var next = event.target;
 
@@ -15437,6 +15447,9 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
+	  if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  }
     }
   };
 
@@ -16362,6 +16375,7 @@ function WalkontableSettings(instance, settings) {
     onCellMouseDown: null,
     onCellMouseOver: null,
 //    onCellMouseOut: null,
+	onCellClick: null,
     onCellDblClick: null,
     onCellCornerMouseDown: null,
     onCellCornerDblClick: null,
