@@ -2417,7 +2417,7 @@ DefaultSettings.prototype = {
   manualRowMove: void 0,
   manualRowResize: void 0,
   groups: void 0,
-  clickBeginsEditing: false
+  clickBeginsEditing: false,
   viewportRowRenderingOffset: 10 //number of rows to be prerendered before and after the viewport
 };
 Handsontable.DefaultSettings = DefaultSettings;
